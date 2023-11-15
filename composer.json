@@ -1,0 +1,26 @@
+{
+  "name": "emizoripx/many-contacts",
+  "description": "Library to integrate the Many Contacts service",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Emizoripx\\ManyContacts\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Alvaro Molina",
+      "email": "remberto.molina@emizor.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {},
+  "extra": {
+    "laravel": {
+      "providers": [
+        "EmizorIpx\\ManyContacts\\ManyContactsServiceProvider"
+      ]
+    }
+  }
+}
