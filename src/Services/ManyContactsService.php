@@ -35,11 +35,11 @@ class ManyContactsService
     public function validateSettings(): void
     {
 
-        if (empty(config('whatsappcloudapi.manycontacts_api_host'))) {
+        if (empty(config('manycontacts.manycontacts_api_host'))) {
             throw new ManyContactsException('ManyContacts Host no encontrado, se debe configurar en el .ENV');
         }
 
-        if (empty(config('whatsappcloudapi.manycontacts_api_key'))) {
+        if (empty(config('manycontacts.manycontacts_api_key'))) {
             throw new ManyContactsException('Api Token requerido');
         }
     }

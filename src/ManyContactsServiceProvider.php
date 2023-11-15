@@ -2,7 +2,7 @@
 
 namespace EmizorIpx\ManyContacts;
 
-use EmizorIpx\WhatsappCloudapi\Utils\ManyContactsSendHelper;
+use EmizorIpx\ManyContacts\Utils\ManyContactsSendHelper;
 use Illuminate\Support\ServiceProvider;
 
 class ManyContactsServiceProvider extends ServiceProvider
@@ -23,10 +23,10 @@ class ManyContactsServiceProvider extends ServiceProvider
         // FACADES
         $app = $this->app;
 
-        /* $app->bind('send_whatsapp_text_message', function() { */
+        $app->bind('send_whatsapp_text_message', function() {
 
-        /*     return new ManyContactsSendHelper(); */
-        /* }); */
+            return new ManyContactsSendHelper();
+        });
     }
 
     /**
