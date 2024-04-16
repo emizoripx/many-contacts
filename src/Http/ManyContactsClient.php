@@ -19,13 +19,14 @@ class ManyContactsClient
     public function sendRequest(Request $request)
     {
         \Log::debug("Send to URL: " . $this->buildRequestUri($request));
-        \Log::debug("Body to Send: " . $request->getEncodedBody());
+        \Log::debug("Body to Send: ", [$request->getEncodedBody()]);
         \Log::debug("Headers to Send: " . json_encode($request->getHeaders()));
 
         $response = $this->client_handler->send(
             $this->buildRequestUri($request),
             $request->getEncodedBody(),
-            $request->getHeaders()
+            $request->getHeaders(),
+            $request->getBodyType()
         );
 
         $return_response = new Response($request, $response->getBody(), $response->getStatusCode(), $response->getHeaders());

@@ -5,7 +5,9 @@ namespace EmizorIpx\ManyContacts\Services;
 use EmizorIpx\ManyContacts\Exceptions\ManyContactsException;
 use EmizorIpx\ManyContacts\Exceptions\ResponseManyContactsException;
 use EmizorIpx\ManyContacts\Http\ManyContactsClient;
+use EmizorIpx\ManyContacts\Messages\ManyContacts\TemplateMediaMessage;
 use EmizorIpx\ManyContacts\Messages\ManyContacts\TextMessage;
+use EmizorIpx\ManyContacts\Request\ManyContacts\RequestTemplateMediaMessage;
 use EmizorIpx\ManyContacts\Request\ManyContacts\RequestTextMessage;
 use Exception;
 use GuzzleHttp\Exception\RequestException;
@@ -84,13 +86,11 @@ class ManyContactsService
             \Log::debug("Error de conexión al enviar el mensaje " . $rex->getResponse()->getBody());
 
             throw new ManyContactsException($rex->getResponse()->getBody(), true);
-
         } catch (ResponseManyContactsException $rsex) {
 
             \Log::debug("Error Reponse whatsapp Service: " . $rsex->getResponseData() . ' Staus Code: ' . $rsex->getHttpStatusCode());
 
             throw new ManyContactsException($rsex->getResponseData(), true);
-
         } catch (Exception $ex) {
 
             \Log::debug("Ocurrio un excepción al enviar el Mensaje: " . $ex->getMessage() . ' File: ' . $ex->getFile() . ' Line: ' . $ex->getLine());
@@ -98,5 +98,32 @@ class ManyContactsService
             throw new ManyContactsException($ex->getMessage());
         }
     }
-}
 
+    public function sendTemplateMediaMessage(string $number_phone, string $template, array $data)
+    {
+        try {
+
+            $message = new TemplateMediaMessage($number_phone, $data['file'], $data['text'] ?? null);
+
+            $request = new RequestTemplateMediaMessage($message, $this->api_key, sprintf(RequestTemplateMediaMessage::URI, $template, $number_phone));
+
+            $this->setPreparedData($request->getBody());
+
+            $response = $this->client->sendRequest($request);
+
+            $this->setParsedResponse($response->getDecodedBody());
+
+            return $response;
+        } catch (RequestException $rex) {
+
+            \Log::debug("Error de conexión al enviar el mensaje :" . $rex->getResponse()->getBody());
+
+            throw new ManyContactsException($rex->getResponse()->getBody(), true);
+        } catch (Exception $ex) {
+
+            \Log::debug("Ocurrio un excepción al enviar el Mensaje Multimedia: " . $ex->getMessage() . ' File: ' . $ex->getFile() . ' Line: ' . $ex->getLine());
+
+            throw new ManyContactsException($ex->getMessage());
+        }
+    }
+}

@@ -16,6 +16,8 @@ abstract class Request
 
     protected $encoded_body;
 
+    protected $body_type;
+
     public function  __construct(Message $message, string $api_key, string $uri)
     {
         $this->api_key = $api_key;
@@ -57,7 +59,12 @@ abstract class Request
         ];
     }
 
-    private function encodeBody(): void
+    public function getBodyType(): string
+    {
+        return 'body';
+    }
+
+    protected function encodeBody(): void
     {
         $this->encoded_body = json_encode($this->getBody());
     }

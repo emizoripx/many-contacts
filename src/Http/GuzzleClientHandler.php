@@ -14,10 +14,15 @@ class GuzzleClientHandler {
 
     }
 
-    public function send( string $url, string $body, array $headers ){
+    public function send( string $url, $body, array $headers, string $body_type = 'body' ){
+
+        \Log::debug('Request: ', [
+            $body_type => $body,
+            'headers' => $headers
+        ]);
 
         $response = $this->guzzle_client->post( $url, [
-            'body' => $body,
+            $body_type => $body,
             'headers' => $headers
         ]);
 
