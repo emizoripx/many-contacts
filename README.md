@@ -1,4 +1,4 @@
-# WHATSAPP CLOUD API PACKAGE v0.1.0
+# WHATSAPP CLOUD API PACKAGE v0.2.0
 
 ## Package for sending Whatsapp messages with the ManyContacts service.
 
