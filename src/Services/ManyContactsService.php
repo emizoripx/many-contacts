@@ -91,7 +91,7 @@ class ManyContactsService
             \Log::debug("Error Reponse whatsapp Service: " . $rsex->getResponseData() . ' Staus Code: ' . $rsex->getHttpStatusCode());
 
             throw new ManyContactsException($rsex->getResponseData(), true);
-        } catch (Exception $ex) {
+        } catch (\Throwable $ex) {
 
             \Log::debug("Ocurrio un excepción al enviar el Mensaje: " . $ex->getMessage() . ' File: ' . $ex->getFile() . ' Line: ' . $ex->getLine());
 
@@ -119,7 +119,7 @@ class ManyContactsService
             \Log::debug("Error de conexión al enviar el mensaje :" . $rex->getResponse()->getBody());
 
             throw new ManyContactsException($rex->getResponse()->getBody(), true);
-        } catch (Exception $ex) {
+        } catch (\Throwable $ex) {
 
             \Log::debug("Ocurrio un excepción al enviar el Mensaje Multimedia: " . $ex->getMessage() . ' File: ' . $ex->getFile() . ' Line: ' . $ex->getLine());
 
