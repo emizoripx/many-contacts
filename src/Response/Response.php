@@ -67,7 +67,7 @@ class Response {
 
     public function throwException(){
 
-        \Log::debug("Throw Response Exception Many Contacts >>>>>>>>>>>>>>>>>>> ");
+        \Log::debug("Throw Exception Many Contacts >>>>>>>>>>>>>>>>>>> ");
         throw new ResponseManyContactsException($this);
     }
 
@@ -86,10 +86,7 @@ class Response {
         if (!is_array($this->decoded_body)) {
             $this->decoded_body = [];
         }
-
-        if( $this->isError() ) {
-            $this->throwException();
-        }
+        \Log::debug("finish decode body manycontacts >>>>>>>>>>>>>>>>>>> ");
     }
 
 }
