@@ -67,8 +67,8 @@ class Response {
 
     public function throwException(){
 
-        \Log::debug("Throw Response Exception >>>>>>>>>>>>>>>>>>> ");
-        return new ResponseManyContactsException($this);
+        \Log::debug("Throw Response Exception Many Contacts >>>>>>>>>>>>>>>>>>> ");
+        throw new ResponseManyContactsException($this);
     }
 
 

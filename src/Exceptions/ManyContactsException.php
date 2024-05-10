@@ -9,8 +9,7 @@ class ManyContactsException extends Exception
     public function __construct($msg, $exception_service = false)
     {
         $finalMessage = ['error' => ''];
-        \Log::debug("Many Contacts >>>>>>>>>>>>>>> ");
-        \Log::debug($msg);
+        \Log::debug("Many Contacts >>>>>>>>>>>>>>> ", [$msg]);
 
         if ($msg != null) {
             $finalMessage = [
