@@ -35,7 +35,7 @@ class CallbackManyContactsResponse extends AbstractCallbackResponse
 
         $this->statuses_data = $statuses_data;
 
-        $this->response_message = isset($this->body['messages']) ? new ResponseMessage($this->body['messages'], $this->body['contacts']) : null;
+        $this->response_message = isset($this->body['delta']) ? new ResponseMessage($this->body['delta'], $this->body['contact'], $this->body['event']) : null;
     }
 }
 

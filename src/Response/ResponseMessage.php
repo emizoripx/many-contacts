@@ -11,7 +11,11 @@ class ResponseMessage {
 
     protected $message;
 
-    protected $contacts;
+    protected $delta;
+
+    protected $event;
+
+    protected $contact;
 
     protected $profile;
 
@@ -27,11 +31,13 @@ class ResponseMessage {
 
     protected $wa_id;
 
-    public function __construct( array $messages, array $contacts) {
+    public function __construct( $delta, $event, $contact) {
 
-        $this->message = $messages[0];
+        $this->event = $event;
 
-        $this->contacts = $contacts[0];
+        $this->delta = $delta;
+
+        $this->contact = $contact;
 
         $this->decodeMessage();
 
@@ -105,21 +111,21 @@ class ResponseMessage {
 
     public function decodeMessage() {
 
-        $this->profile = isset( $this->contacts['profile'] ) ? $this->contacts['profile'] : [];
+        $this->profile = isset( $this->contact ) ? $this->contact : [];
 
-        $this->wa_id = isset($this->contacts['wa_id']) ? $this->contacts['wa_id'] : null;
+        $this->wa_id = isset($this->contact['number']) ? $this->contact['number'] : null;
 
         \Log::debug('Profile: ' . json_encode( $this->profile ));
 
-        $this->from = isset( $this->message['from'] ) ? $this->message['from'] : null;
+        $this->from = isset($this->contact['number']) ? $this->contact['number'] : null;
 
-        $this->id = isset( $this->message['id'] ) ? $this->message['id'] : null;
+        $this->id = isset( $this->delta["message"]['id'] ) ? $this->delta["message"]['id'] : null;
 
-        $this->timestamp = isset( $this->message['timestamp'] ) ? $this->message['timestamp'] : null;
+        $this->timestamp = isset( $this->delta["message"]['metadata']["time"] ) ? $this->delta["message"]['metadata']["time"] : null;
+        $this->text = [];
+        $this->text["body"] = isset( $this->delta["message"]["text"] ) ? $this->delta["message"]["text"] : null;
 
-        $this->text = isset( $this->message['text'] ) ? $this->message['text'] : null;
-
-        $this->type = isset( $this->message['type'] ) ? $this->message['type'] : null;
+        $this->type = isset( $this->delta["message"]['type'] ) ? $this->delta["message"]['type'] : null;
 
     }
 }
