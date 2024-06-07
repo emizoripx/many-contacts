@@ -66,11 +66,20 @@ class ManyContactsService
         return $this->prepared_data;
     }
 
+    public function validateFormatNumber($number_phone)
+    {
+        if (substr($number_phone, 0, 3) === '591') {
+            return $number_phone;
+        }
+        return "591".$number_phone;
+    }
+
+
     public function sendTextMessage(string $number_phone, string $text)
     {
         try {
 
-            $message = new TextMessage($number_phone, $text);
+            $message = new TextMessage($this->validateFormatNumber($number_phone), $text);
 
             $request = new RequestTextMessage($message, $this->api_key, RequestTextMessage::URI);
 
@@ -103,9 +112,9 @@ class ManyContactsService
     {
         try {
 
-            $message = new TemplateMediaMessage($number_phone, $data['file'], $data['text'] ?? null);
+            $message = new TemplateMediaMessage($this->validateFormatNumber($number_phone), $data['file'], $data['text'] ?? null);
 
-            $request = new RequestTemplateMediaMessage($message, $this->api_key, sprintf(RequestTemplateMediaMessage::URI, $template, $number_phone));
+            $request = new RequestTemplateMediaMessage($message, $this->api_key, sprintf(RequestTemplateMediaMessage::URI, $template, $this->validateFormatNumber($number_phone)));
 
             $this->setPreparedData($request->getBody());
 
