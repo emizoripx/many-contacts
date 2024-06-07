@@ -31,7 +31,7 @@ class ResponseMessage {
 
     protected $wa_id;
 
-    public function __construct( $delta, $event, $contact) {
+    public function __construct( $delta, $contact, $event) {
 
         $this->event = $event;
 
