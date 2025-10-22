@@ -6,8 +6,10 @@ use EmizorIpx\ManyContacts\Exceptions\ManyContactsException;
 use EmizorIpx\ManyContacts\Exceptions\ResponseManyContactsException;
 use EmizorIpx\ManyContacts\Http\ManyContactsClient;
 use EmizorIpx\ManyContacts\Messages\ManyContacts\TemplateMediaMessage;
+use EmizorIpx\ManyContacts\Messages\ManyContacts\TemplateWithVariablesMessage;
 use EmizorIpx\ManyContacts\Messages\ManyContacts\TextMessage;
 use EmizorIpx\ManyContacts\Request\ManyContacts\RequestTemplateMediaMessage;
+use EmizorIpx\ManyContacts\Request\ManyContacts\RequestTemplateWithVariablesMessage;
 use EmizorIpx\ManyContacts\Request\ManyContacts\RequestTextMessage;
 use Exception;
 use GuzzleHttp\Exception\RequestException;
@@ -71,7 +73,7 @@ class ManyContactsService
         if (substr($number_phone, 0, 3) === '591') {
             return $number_phone;
         }
-        return "591".$number_phone;
+        return "591" . $number_phone;
     }
 
 
@@ -131,6 +133,34 @@ class ManyContactsService
         } catch (\Throwable $ex) {
 
             \Log::debug("Ocurrio un excepción al enviar el Mensaje Multimedia: " . $ex->getMessage() . ' File: ' . $ex->getFile() . ' Line: ' . $ex->getLine());
+
+            throw new ManyContactsException($ex->getMessage());
+        }
+    }
+
+    public function sendTemplateWithVariablesMessage(string $number_phone, string $template, array $data)
+    {
+        try {
+
+            $message = new TemplateWithVariablesMessage($this->validateFormatNumber($number_phone), $data['variables']);
+
+            $request = new RequestTemplateWithVariablesMessage($message, $this->api_key, sprintf(RequestTemplateWithVariablesMessage::URI, $template, $this->validateFormatNumber($number_phone)));
+
+            $this->setPreparedData($request->getBody());
+
+            $response = $this->client->sendRequest($request);
+
+            $this->setParsedResponse($response->getDecodedBody());
+
+            return $response;
+        } catch (RequestException $rex) {
+
+            \Log::debug("Error de conexión al enviar el mensaje :" . $rex->getResponse()->getBody());
+
+            throw new ManyContactsException($rex->getResponse()->getBody(), true);
+        } catch (\Throwable $ex) {
+
+            \Log::debug("Ocurrio un excepción al enviar el Mensaje Variables: " . $ex->getMessage() . ' File: ' . $ex->getFile() . ' Line: ' . $ex->getLine());
 
             throw new ManyContactsException($ex->getMessage());
         }
