@@ -148,7 +148,7 @@ class ManyContactsService
 
             $this->setPreparedData($request->getBody());
 
-            $response = $this->client->sendRequest($request);
+            $response = $this->client->sendRequest($request, ManyContactsClient::API_VERSION_2);
 
             $this->setParsedResponse($response->getDecodedBody());
 
